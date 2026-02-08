@@ -24,13 +24,13 @@ clock = pygame.time.Clock()
 FPS = 60
 
 # load music and sounds
-pygame.mixer.music.load('fuyu-biyori bgm.mp3')
+'''pygame.mixer.music.load('fuyu-biyori bgm.mp3')
 pygame.mixer.music.set_volume(0.9)
 pygame.mixer.music.play(-1, 0.0)
 jump_fx = pygame.mixer.Sound('jump.mp3')
 jump_fx.set_volume(1)
 death_fx = pygame.mixer.Sound('death.mp3')
-death_fx.set_volume(1)
+death_fx.set_volume(1)'''
 
 # game variable
 SCROLL_THRESH = 200
@@ -63,7 +63,7 @@ bg_image = pygame.image.load('background2.png').convert_alpha()
 platform_image = pygame.image.load('wood.png').convert_alpha()
 
 # bird spritesheet
-bird_sheet_img = pygame.image.load('bird.png').convert_alpha()
+bird_sheet_img = pygame.image.load('fishpinky.png').convert_alpha()
 bird_sheet = SpriteSheet(bird_sheet_img)
 
 # function for displaying text to the screen
@@ -127,7 +127,7 @@ class Player():
                         self.rect.bottom = platform.rect.top
                         dy = 0
                         self.vel_y = -20
-                        jump_fx.play()
+                        #jump_fx.play()
 
         # check if player has bounced to the top of the screen
         if self.rect.top <= SCROLL_THRESH:
@@ -189,7 +189,7 @@ platform_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
 
 # create starting platforms
-platform = Platform( SCREEN_WIDTH // 2 - 50,SCREEN_HEIGHT - 50,100, 20, False)
+platform = Platform( SCREEN_WIDTH // 2 - 50,SCREEN_HEIGHT - 50,100, 100, False)
 platform_group.add(platform)
 
 
@@ -210,8 +210,8 @@ while run:
 
         # generate platform
         if len(platform_group) < MAX_PLATFORMS:
-            p_w = random.randint(40, 60)
-            p_h = 20
+            p_w = 60
+            p_h = 40
             p_x = random.randint(0, SCREEN_WIDTH - p_w)
             p_y = platform.rect.y - random.randint(80, 120)
             p_type = random.randint(1, 2)
@@ -252,21 +252,16 @@ while run:
         # check game over
         if jumpy.rect.top > SCREEN_HEIGHT:
             game_over = True
-            death_fx.play()
+            #death_fx.play()
         
         # check for collosion with enemy
         if pygame.sprite.spritecollide(jumpy, enemy_group, False):
             if pygame.sprite.spritecollide(jumpy, enemy_group, False, pygame.sprite.collide_mask):
                 game_over = True
-                death_fx.play()
+                #death_fx.play()
     
     else:
-        if fade_counter < SCREEN_WIDTH:
-            fade_counter += 5
-            for y in range(0, 6, 2):
-                pygame.draw.rect(screen, BLACK, (0, y * 100, fade_counter, 100))
-                pygame.draw.rect(screen, BLACK, (SCREEN_WIDTH - fade_counter, (y + 1) * 100, SCREEN_WIDTH, 100))
-        else:
+            screen.fill(BLACK)
             draw_text('GAME OVER!', font_big, WHITE, 130, 200)
             draw_text('SCORE: ' + str(score), font_big, WHITE, 130, 250)
             draw_text('PRESS SPACE TO PLAY AGAIN', font_big, WHITE, 40, 300)
@@ -289,7 +284,7 @@ while run:
                 # reset platforms
                 platform_group.empty()
                 # create starting platform
-                platform = Platform(SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT - 50, 100, False)
+                platform = Platform(SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT - 50, 100, 100, False)
                 platform_group.add(platform)
 
     # event handler
